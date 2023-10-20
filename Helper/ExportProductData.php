@@ -18,7 +18,6 @@ use Magento\Catalog\Model\Product\Visibility;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\CatalogInventory\Api\StockStateInterface;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
-use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableType;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\LocalizedException;
@@ -151,8 +150,7 @@ class ExportProductData
                     $this->processSimple($product, $result['products']);
                     break;
                 case Configurable::TYPE_CODE:
-                    /** @var ConfigurableType $typeInstance */
-                        $typeInstance = $product->getTypeInstance();
+                    $typeInstance = $product->getTypeInstance();
                     $_children = $typeInstance->getUsedProducts($product);
                     /** @var Product $child */
                     foreach ($_children as $child) {
@@ -199,18 +197,19 @@ class ExportProductData
             $image = "";
         }
 
+        $offer_price = $parent != null ? $parent->getData("onecode_shopflix_offer_price") : $product->getData("onecode_shopflix_offer_price");
         $data[$product->getId()] = [
             "sku" => $product->getSku(),
             "mpn" => $product->getData($this->_helper->getMpnAttribute()),
             "ean" => $product->getData($this->_helper->getEanAttribute()),
             "name" => $product->getData($this->_helper->getTitleAttribute()),
-            "price" => $parent != null ? $parent->getData("final_price") : number_format($product->getData('final_price'), 2),
-            "list_price" => $parent != null ? $parent->getData("price") : number_format($product->getData('price'), 2),
+            "price" => $parent != null ? number_format($parent->getFinalPrice(), 2) : number_format($product->getFinalPrice(), 2),
+            "list_price" => number_format($product->getPrice(), 2),
             "url" => $parent != null ? $parent->getProductUrl() : $product->getProductUrl(),
             "shipping_lead_time" => $parent != null ? $parent->getData("onecode_shopflix_shipping_lead_time") : $product->getData("onecode_shopflix_shipping_lead_time"),
             "offer_from" => $parent != null ? $parent->getData("onecode_shopflix_offer_date_from") : $product->getData("onecode_shopflix_offer_date_from"),
             "offer_to" => $parent != null ? $parent->getData("onecode_shopflix_offer_date_to") : $product->getData("onecode_shopflix_offer_date_to"),
-            "offer_price" => number_format($parent != null ? $parent->getData("onecode_shopflix_offer_price") : $product->getData("onecode_shopflix_offer_price"), 2),
+            "offer_price" => $offer_price ? number_format($offer_price, 2) : '',
             "offer_quantity" => $parent != null ? $parent->getData("onecode_shopflix_offer_qty") : $product->getData("onecode_shopflix_offer_qty"),
             "quantity" => $stock,
             "image" => $image,
@@ -218,9 +217,9 @@ class ExportProductData
 
         if (!$this->_simpler) {
             $data[$product->getId()] = array_merge($data[$product->getId()], [
-                "description" => $product->getData($this->_helper->getDescriptionAttribute()),
-                "weight" => number_format($product->getData($this->_helper->getWeightAttribute()), 2),
-                "manufacturer" => $product->getAttributeText($this->_helper->getManufacturerAttribute()),
+                "description" => $parent != null ? $parent->getAttributeText($this->_helper->getDescriptionAttribute()) : $product->getData($this->_helper->getDescriptionAttribute()),
+                "weight" => $parent != null ? number_format($parent->getData($this->_helper->getWeightAttribute()), 2) : number_format($product->getData($this->_helper->getWeightAttribute()), 2),
+                "manufacturer" => $parent != null ? $parent->getAttributeText($this->_helper->getManufacturerAttribute()) : $product->getAttributeText($this->_helper->getManufacturerAttribute()),
             ]);
             if ($this->_helper->exportCategory()) {
                 $this->addCategories($product, $data[$product->getId()]);

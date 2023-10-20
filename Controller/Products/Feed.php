@@ -110,7 +110,7 @@ class Feed implements HttpGetActionInterface
                 if (in_array($key, ['description', 'npm', 'category', 'name'])) {
                     $xml->addChild($key)->addCData($value);
                 } else {
-                    $xml->addChild($key, htmlspecialchars($value));
+                    $xml->addChild($key, htmlspecialchars($value ?: ''));
                 }
 
 
