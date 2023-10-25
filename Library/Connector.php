@@ -166,7 +166,7 @@ class Connector
         $path = $this->_path . "orders";
         $response = $this->_httpClient->get($path, ['query' => $query]);
 
-        $responseObject = json_decode($response->getBody()->getContents());
+        $responseObject = json_decode($response->getBody()->getContents(), true);
         if ($die) {
             dd(json_encode($responseObject), $this->_username, $this->_password);
         }
