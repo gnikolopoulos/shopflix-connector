@@ -218,7 +218,7 @@ class ExportProductData
         if (!$this->_simpler) {
             $data[$product->getId()] = array_merge($data[$product->getId()], [
                 "description" => $parent != null ? $parent->getAttributeText($this->_helper->getDescriptionAttribute()) : $product->getData($this->_helper->getDescriptionAttribute()),
-                "weight" => $parent != null ? number_format($parent->getData($this->_helper->getWeightAttribute()), 2) : number_format($product->getData($this->_helper->getWeightAttribute()), 2),
+                "weight" => $parent != null ? number_format($parent->getData($this->_helper->getWeightAttribute()) ?: 0, 2) : number_format($product->getData($this->_helper->getWeightAttribute()) ?: 0, 2),
                 "manufacturer" => $parent != null ? $parent->getAttributeText($this->_helper->getManufacturerAttribute()) : $product->getAttributeText($this->_helper->getManufacturerAttribute()),
             ]);
             if ($this->_helper->exportCategory()) {
