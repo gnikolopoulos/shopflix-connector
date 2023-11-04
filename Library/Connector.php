@@ -135,7 +135,7 @@ class Connector
             $query['page'] = $page;
 
             $response = $this->_httpClient->get($path, ['query' => $query]);
-            $responseObject = json_decode($response->getBody()->getContents());
+            $responseObject = json_decode($response->getBody()->getContents(), true);
             foreach ($responseObject['orders'] as $order) {
                 $data[] = $this->getOrderDetail($order['order_id']);
             }
@@ -187,7 +187,7 @@ class Connector
         if ($orderId) {
             $path = $this->_path . "orders/$orderId";
             $response = $this->_httpClient->get($path);
-            $responseObject = json_decode($response->getBody()->getContents());
+            $responseObject = json_decode($response->getBody()->getContents(), true);
 
             $data = [
                 "order" =>
@@ -570,7 +570,7 @@ class Connector
 
         ]]);
         $content = $response->getBody()->getContents();
-        $json = json_decode($content);
+        $json = json_decode($content, true);
         $data = [];
         foreach ($json['shipments'] as $key => $shipment) {
             $data[$key] = [
@@ -627,7 +627,7 @@ class Connector
             $query['page'] = $page;
 
             $response = $this->_httpClient->get($path, ['query' => $query]);
-            $responseObject = json_decode($response->getBody()->getContents());
+            $responseObject = json_decode($response->getBody()->getContents(), true);
             foreach ($responseObject['orders'] as $order) {
                 $products = $order['products'];
                 $data[] = $this->getReturnOrderDetail($order['order_id'], $products);
@@ -658,7 +658,7 @@ class Connector
         $path = $this->_path . "returns";
         $response = $this->_httpClient->get($path, ['query' => $query]);
 
-        $responseObject = json_decode($response->getBody()->getContents());
+        $responseObject = json_decode($response->getBody()->getContents(), true);
 
         $itemPerPages = $responseObject['params']['items_per_page'] ?? 1;
         $totalItems = $responseObject['params']['total_items'] ?? 1;
@@ -672,7 +672,7 @@ class Connector
         if ($orderId) {
             $path = $this->_path . "returns/$orderId";
             $response = $this->_httpClient->get($path);
-            $responseObject = json_decode($response->getBody()->getContents());
+            $responseObject = json_decode($response->getBody()->getContents(), true);
 
             $data = [
                 "return_order" =>
