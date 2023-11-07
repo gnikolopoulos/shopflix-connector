@@ -129,7 +129,7 @@ class ImportReturnOrders
         foreach ($declinedOrders as $order) {
             $this->processDeclineOrder($order);
         }
-        $completedOrders = $this->_connector->getCompletedReturnedOrders();
+        $completedOrders = $this->_connector->getCompletedOrders();
         foreach ($completedOrders as $order) {
             $this->processCompleteOrder($order);
         }
