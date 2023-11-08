@@ -193,8 +193,7 @@
     <virtualType name="OnecodeShopFlixConnectorIndexGridAsyncInsertCron"
                  type="Onecode\ShopFlixConnector\Cron\GridAsyncInsert">
         <arguments>
-            <argument name="asyncInsert"
-                      xsi:type="object">OnecodeShopFlixConnectorOrderIndexGridAsyncInsert
+            <argument name="asyncInsert" xsi:type="object">OnecodeShopFlixConnectorOrderIndexGridAsyncInsert
             </argument>
         </arguments>
     </virtualType>
@@ -457,6 +456,9 @@
                 <item name="created_at" xsi:type="string">onecode_shopflix_shipment.created_at</item>
                 <item name="updated_at" xsi:type="string">onecode_shopflix_shipment.updated_at</item>
                 <item name="order_id" xsi:type="string">onecode_shopflix_shipment.order_id</item>
+            </argument>
+            <argument name="notSyncedDataProvider" xsi:type="object">
+                Onecode\ShopFlixConnector\Model\ResourceModel\Provider\NotSyncedOrderDataProvider
             </argument>
         </arguments>
     </virtualType>

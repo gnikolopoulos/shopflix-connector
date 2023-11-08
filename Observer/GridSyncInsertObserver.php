@@ -40,7 +40,6 @@ class GridSyncInsertObserver implements ObserverInterface
     {
         if (!$this->globalConfig->getValue('dev/grid/async_indexing')) {
             $this->entityGrid->refresh($observer->getObject()->getId());
-
         }
     }
 }

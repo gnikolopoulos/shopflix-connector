@@ -480,7 +480,7 @@ class Connector
             ]
         );
         $content = $response->getBody()->getContents();
-        return json_decode($content);
+        return json_decode($content, true);
     }
 
     public function getManifest()
@@ -490,7 +490,7 @@ class Connector
         $response = $this->_httpClient->get($path, ['query' => ['manifest' => 1,]]);
 
         $content = $response->getBody()->getContents();
-        return json_decode($content);
+        return json_decode($content, true);
     }
 
     public function printVoucher($voucher, $labelFormat = "pdf")
@@ -499,13 +499,11 @@ class Connector
         $query = $this->getPrintQuery($labelFormat, $voucher);
         $response = $this->_httpClient->get($path, ['query' => $query, "debug" => $this->_debug]);
         $content = $response->getBody()->getContents();
-        return json_decode($content);
-
+        return json_decode($content, true);
     }
 
     private function getPrintQuery($labelFormat, $voucher, $type = "print")
     {
-
         $query = [];
         if ($type == "print") {
             $query['print'] = $voucher;
@@ -523,7 +521,6 @@ class Connector
                 break;
         }
         return $query;
-
     }
 
     public function createVoucher($shipmentId)
@@ -531,7 +528,7 @@ class Connector
         $path = $this->_path . "courier/{$shipmentId}";
         $response = $this->_httpClient->get($path);
         $content = $response->getBody()->getContents();
-        return json_decode($content);
+        return json_decode($content, true);
     }
 
     public function getShipmentUrl($shipmentId)
@@ -539,7 +536,7 @@ class Connector
         $path = $this->_path . "shipments";
         $response = $this->_httpClient->get($path, ['query' => ['shipment_id' => $shipmentId,]]);
         $content = $response->getBody()->getContents();
-        $json = json_decode($content);
+        $json = json_decode($content, true);
 
         return $json['shipments'][0]['carrier_info']['tracking_url'];
     }
@@ -549,7 +546,7 @@ class Connector
         $path = $this->_path . "shipments";
         $response = $this->_httpClient->get($path, ['query' => ['shipment_id' => $shipmentId,]]);
         $content = $response->getBody()->getContents();
-        $json = json_decode($content);
+        $json = json_decode($content, true);
 
         return $json['shipments'][0]['tracking_number'] ?? "";
     }
@@ -620,7 +617,6 @@ class Connector
         $path = $this->_path . "returns";
         $query = $this->getReturnOrderQueryByStatus($orderStatus, $startTime, $endTime);
 
-
         for ($page = 1; $page <= $this->getPageForReturnedOrders($query); $page++) {
             $query['page'] = $page;
 
@@ -636,7 +632,6 @@ class Connector
 
     private function getReturnOrderQueryByStatus($orderStatus, $startTime, $endTime): array
     {
-
         $data = [
             "status" => $orderStatus
         ];
@@ -647,8 +642,6 @@ class Connector
         }
 
         return $data;
-
-
     }
 
     private function getPageForReturnedOrders($query): int
@@ -661,7 +654,6 @@ class Connector
         $itemPerPages = $responseObject['params']['items_per_page'] ?? 1;
         $totalItems = $responseObject['params']['total_items'] ?? 1;
         return (int)ceil($totalItems / $itemPerPages);
-
     }
 
     public function getReturnOrderDetail($orderId, $products): array
@@ -759,7 +751,10 @@ class Connector
         }
     }
 
-
+    public function getCompletedReturnedOrders(): array
+    {
+        return $this->getReturnOrders(self::SHOPFLIX_RETURN_ORDER_RETURNED_APPROVED_TO_STORE_STATUS, $this->_startTime, $this->_endTime);
+    }
 
     public function getDeclinedReturnedOrders(): array
     {
@@ -802,14 +797,11 @@ class Connector
             throw new Exception($response->getBody()->getContents());
         }
 
-
         try {
             json_decode($response->getBody()->getContents());
         } catch (InvalidArgumentException $e) {
             throw new Exception($response->getBody()->getContents());
         }
-
-
     }
 
     /**

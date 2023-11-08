@@ -115,7 +115,6 @@ class ImportReturnOrders
         }
 
         $deliveredOrders = $this->_connector->getDeliveredToStoreReturnedOrders();
-
         foreach ($deliveredOrders as $order) {
             $this->processDeliveredToStoreOrder($order);
         }
@@ -129,7 +128,7 @@ class ImportReturnOrders
         foreach ($declinedOrders as $order) {
             $this->processDeclineOrder($order);
         }
-        $completedOrders = $this->_connector->getCompletedOrders();
+        $completedOrders = $this->_connector->getCompletedReturnedOrders();
         foreach ($completedOrders as $order) {
             $this->processCompleteOrder($order);
         }
@@ -171,7 +170,6 @@ class ImportReturnOrders
             $this->_logger->info($e);
             $order = $this->_orderFactory->create();
         }
-
 
         try {
             $parentOrder = $this->_parentOrderRepository->getByIncrementId($data['return_order']['shopflix_parent_order_id']);

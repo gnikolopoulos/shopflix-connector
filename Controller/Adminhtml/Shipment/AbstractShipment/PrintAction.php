@@ -156,14 +156,12 @@ abstract class PrintAction extends Action
 
     private function createVoucher(Connector $connector, ShipmentInterface $shipment)
     {
-
         try {
             $voucher = $connector->createVoucher($shipment->getIncrementId());
             $voucher = $voucher['voucher']['ShipmentNumber'];
         } catch (ServerException $e) {
             $voucher = $connector->getVoucher($shipment->getIncrementId());
         }
-
 
         if ($voucher) {
             $trackingUrl = $connector->getShipmentUrl($shipment->getIncrementId());
@@ -176,6 +174,5 @@ abstract class PrintAction extends Action
 
         }
         return null;
-
     }
 }
