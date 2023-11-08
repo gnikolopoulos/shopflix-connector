@@ -81,15 +81,12 @@ class ImportShipments
         $searchCriteria = $this->searchCriteriaBuilder->create();
         $orders = $this->orderRepository->getList($searchCriteria);
 
-
-
         /** @var OrderInterface $order */
         foreach ($orders as $order) {
             $shipmenData = $this->connector->getShipment($order->getShopFlixOrderId());
             foreach ($shipmenData as $shipment) {
                 $this->processShipment($shipment, $order);
             }
-
         }
     }
 
@@ -100,8 +97,6 @@ class ImportShipments
      */
     private function processShipment($shipment, Order $order)
     {
-
-
         try {
             $shipmentObject = $this->shipmentRepository->getByIncrementId($shipment['shipment'][ShipmentInterface::INCREMENT_ID]);
         } catch (NoSuchEntityException $e) {
@@ -109,8 +104,6 @@ class ImportShipments
         }
 
         if ($shipmentObject->getShipmentStatus() != 3) {
-
-
             $items = [];
 
             foreach ($shipment['items'] as $item) {
@@ -135,7 +128,6 @@ class ImportShipments
 
             }
 
-
             $shipment['tracks'][ShipmentTrackInterface::ORDER_ID] = $order->getId();
             $track = $this->trackFactory->create()->setData($shipment['tracks']);
 
@@ -154,7 +146,6 @@ class ImportShipments
                 }
             }
 
-
             /** @var Order\Shipment\Track $shipmentTrack */
             if ($shipmentObject->getTracks()) {
                 foreach ($shipmentObject->getTracks() as $shipmentTrack) {
@@ -164,10 +155,8 @@ class ImportShipments
                 }
             }
 
-
             $shipmentObject->setItems($items);
             if ($track->getTrackNumber()) {
-
                 $shipmentObject->setTracks([$track]);
             }
 
@@ -176,13 +165,10 @@ class ImportShipments
             } catch (LocalizedException $e) {
                 if ($shipment['shipment']['increment_id'] == 45) {
                     dd($e->getPrevious()->getMessage(), $e->getPrevious(), $e->getTraceAsString());
-
                 }
 
                 $this->logger->info(__("SHOPFLIX Order %1 could not save %2 shipment: {$e->getMessage()}", $order->getIncrementId(), $shipment['shipment']['increment_id']));
             }
-
-
         }
     }
 }

@@ -560,15 +560,13 @@ class Connector
         $query = $this->getPrintQuery($labelFormat, $vouchers, "printmass");
         $response = $this->_httpClient->get($path, ['query' => $query, "debug" => $this->_debug]);
         $content = $response->getBody()->getContents();
-        return json_decode($content);
+        return json_decode($content, true);
     }
 
     public function getShipment($orderId)
     {
         $path = $this->_path . "shipments";
-        $response = $this->_httpClient->get($path, ['query' => ['order_id' => $orderId,
-
-        ]]);
+        $response = $this->_httpClient->get($path, ['query' => ['order_id' => $orderId]]);
         $content = $response->getBody()->getContents();
         $json = json_decode($content, true);
         $data = [];

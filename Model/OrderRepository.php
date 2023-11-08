@@ -134,7 +134,6 @@ class OrderRepository implements OrderRepositoryInterface
         $searchResults->setSearchCriteria($searchCriteria);
         $this->collectionProcessor->process($searchCriteria, $searchResults);
 
-
         return $searchResults;
     }
 }
