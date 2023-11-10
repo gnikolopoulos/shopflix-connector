@@ -37,13 +37,16 @@ class SyncShipments extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return void
      * @throws LocalizedException
+     *
+     * @return \Magento\Framework\Console\Cli::RETURN_SUCCESS
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->state->setAreaCode(Area::AREA_GLOBAL);
         $importShipments = ObjectManager::getInstance()->create(ImportShipments::class);
         $importShipments->import();
+
+        return \Magento\Framework\Console\Cli::RETURN_SUCCESS;
     }
 }

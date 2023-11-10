@@ -39,13 +39,16 @@ class SyncOrders extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return void
      * @throws LocalizedException
+     *
+     * @return \Magento\Framework\Console\Cli::RETURN_SUCCESS
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->state->setAreaCode(Area::AREA_GLOBAL);
         $importOrders = ObjectManager::getInstance()->create(ImportOrders::class);
         $importOrders->import();
+
+        return \Magento\Framework\Console\Cli::RETURN_SUCCESS;
     }
 }

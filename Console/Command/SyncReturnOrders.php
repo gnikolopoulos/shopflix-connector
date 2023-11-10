@@ -46,12 +46,14 @@ class SyncReturnOrders extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      *
-     * @return void
+     * @return \Magento\Framework\Console\Cli::RETURN_SUCCESS
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->state->setAreaCode(Area::AREA_GLOBAL);
         $importOrders = ObjectManager::getInstance()->create(ImportReturnOrders::class);
         $importOrders->import();
+
+        return \Magento\Framework\Console\Cli::RETURN_SUCCESS;
     }
 }

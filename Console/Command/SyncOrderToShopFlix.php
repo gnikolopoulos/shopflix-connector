@@ -27,11 +27,14 @@ class SyncOrderToShopFlix extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return void
+     *
+     * @return \Magento\Framework\Console\Cli::RETURN_SUCCESS
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $exportOrders = ObjectManager::getInstance()->create(ExportOrders::class);
         $exportOrders->export();
+
+        return \Magento\Framework\Console\Cli::RETURN_SUCCESS;
     }
 }
