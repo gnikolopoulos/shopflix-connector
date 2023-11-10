@@ -713,7 +713,7 @@ class Connector
                     ReturnItemInterface::SKU => $product['vendor_sku'],
                     ReturnItemInterface::PRICE => $product['price'],
                     ReturnItemInterface::QTY => $product['amount'],
-                    ReturnItemInterface::RETURN_REASON => $product['reason_text'],
+                    ReturnItemInterface::RETURN_REASON => array_key_exists('reason_text', $product) ? $product['reason_text'] : '',
                 ];
             }
         }

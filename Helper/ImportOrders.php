@@ -92,7 +92,6 @@ class ImportOrders
             $this->processNewOrder($order);
         }
 
-
         $canceledOrders = $this->_connector->getCancelOrders();
         foreach ($canceledOrders as $canceledOrder) {
             $this->processCancelOrder($canceledOrder);
