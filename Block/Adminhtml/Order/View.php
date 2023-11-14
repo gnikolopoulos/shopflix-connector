@@ -114,8 +114,7 @@ class View extends Container
             return;
         }
 
-        if ($this->_isAllowedAction('Onecode_ShopFlixConnector::actions_edit') && $order->canAccept()) {
-
+        if ($this->_isAllowedAction('Onecode_ShopFlixConnector::accept') && $order->canAccept()) {
             $this->addButton(
                 'order_acceptance',
                 [
@@ -144,7 +143,7 @@ class View extends Container
             );
         }
 
-        if($this->_isAllowedAction('Onecode_ShopFlixConnector::sync_order')){
+        if($this->_isAllowedAction('Onecode_ShopFlixConnector::sync_order')) {
             $this->addButton(
                 'sync_order',
                 [
