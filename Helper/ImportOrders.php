@@ -67,8 +67,6 @@ class ImportOrders
         $this->_addressFactory = $addressFactory;
         $this->_logger = $logger;
         $this->_orderManagement = $orderManagement;
-
-
     }
 
 
@@ -77,16 +75,17 @@ class ImportOrders
      */
     public function import()
     {
-
         if (!$this->_helper->isEnabled()) {
             return;
         }
+
         $this->_connector = new Connector(
             $this->_helper->getUsername(),
             $this->_helper->getApikey(),
             $this->_helper->getApiUrl(),
             $this->_helper->getTimeModifier()
         );
+
         $newOrders = $this->_connector->getNewOrders();
         foreach ($newOrders as $order) {
             $this->processNewOrder($order);
@@ -124,11 +123,8 @@ class ImportOrders
      */
     private function processNewOrder($data)
     {
-
         $items = [];
-
         $price = 0;
-
 
         foreach ($data['items'] as $item) {
             try {
@@ -142,11 +138,9 @@ class ImportOrders
             }
         }
 
-
         if (empty($items)) {
             return;
         }
-
 
         try {
             $order = $this->_orderRepository->getByIncrementId($data['order']['increment_id']);
@@ -154,7 +148,6 @@ class ImportOrders
             $this->_logger->info($e);
             $order = $this->_orderFactory->create();
         }
-
 
         if ($order->getState() != OrderInterface::STATE_PENDING_ACCEPTANCE && !$order->isObjectNew()) {
             $this->_logger->info(__("SHOPFLIX Order %1 has %2", $data['order']['increment_id'], $order->getStatusLabel()));
@@ -169,7 +162,6 @@ class ImportOrders
                 }
             }
         }
-
 
         $order->addData($data['order']);
         $order->setTotalPaid($price);
@@ -201,6 +193,7 @@ class ImportOrders
         if ($this->_helper->autoAccept()) {
             $this->autoAcceptOrder($order);
         }
+
         return $order;
     }
 
