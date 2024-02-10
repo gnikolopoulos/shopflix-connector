@@ -3,6 +3,7 @@
         "column": {
             "entity_id": true,
             "shopflix_order_id": true,
+            "website_id": true,
             "magento_order_id": true,
             "state": true,
             "status": true,
