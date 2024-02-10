@@ -37,8 +37,6 @@ class ExportOrders
         OrderRepositoryInterface $orderRepository,
         LoggerInterface          $logger,
         SearchCriteriaBuilder    $searchCriteriaBuilder
-
-
     )
     {
         $this->_helper = $data;
@@ -50,7 +48,6 @@ class ExportOrders
 
     public function export()
     {
-
         if (!$this->_helper->isEnabled()) {
             return;
         }
@@ -72,9 +69,7 @@ class ExportOrders
             } catch (Exception $e) {
                 $this->_logger->debug($e);
             }
-
         }
-
     }
 
     /**
@@ -83,8 +78,6 @@ class ExportOrders
      */
     private function processOrder($order)
     {
-
-
         switch ($order->getStatus()) {
             case StatusInterface::STATUS_PICKING:
                 $this->_connector->picking($order->getShopFlixOrderId());
@@ -102,7 +95,6 @@ class ExportOrders
                 $this->_connector->readyToBeShipped($order->getShopFlixOrderId());
                 break;
         }
-
     }
 
 }

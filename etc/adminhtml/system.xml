@@ -15,20 +15,20 @@
                    showInWebsite="1">
                 <label>General</label>
                 <field id="enable" translate="label" type="select" sortOrder="100"
-                       showInStore="0" showInDefault="1" showInWebsite="0">
+                       showInStore="0" showInDefault="1" showInWebsite="1">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <validate>required-entry</validate>
                 </field>
 
                 <field id="to_order" translate="label" type="select" sortOrder="100"
-                       showInStore="0" showInDefault="1" showInWebsite="0">
+                       showInStore="0" showInDefault="1" showInWebsite="1">
                     <label>Convert to magento order</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <validate>required-entry</validate>
                 </field>
                 <field id="auto_accept" translate="label" type="select" sortOrder="110"
-                       showInStore="0" showInDefault="1" showInWebsite="0">
+                       showInStore="0" showInDefault="1" showInWebsite="1">
                     <label>Auto Accept Order</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <validate>required-entry</validate>
@@ -38,7 +38,7 @@
                     </depends>
                 </field>
                 <field id="invoice" translate="label" type="select" sortOrder="120"
-                       showInStore="0" showInDefault="1" showInWebsite="0">
+                       showInStore="0" showInDefault="1" showInWebsite="1">
                     <label>Invoice on acceptance</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <validate>required-entry</validate>
@@ -56,7 +56,7 @@
                     </depends>
                 </field>
                 <field id="username" translate="label" type="text" sortOrder="400" showInStore="0"
-                       showInDefault="1" showInWebsite="0">
+                       showInDefault="1" showInWebsite="1">
                     <label>Username</label>
                     <validate>required-entry validate-email</validate>
                     <depends>
@@ -64,7 +64,7 @@
                     </depends>
                 </field>
                 <field id="api_key" translate="label" type="obscure" sortOrder="400" showInStore="0"
-                       showInDefault="1" showInWebsite="0">
+                       showInDefault="1" showInWebsite="1">
                     <label>Api Key</label>
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                     <validate>required-entry</validate>
@@ -73,7 +73,7 @@
                     </depends>
                 </field>
                 <field id="supported_products" translate="label" type="multiselect" sortOrder="410" showInDefault="1"
-                       showInWebsite="0" showInStore="1">
+                       showInWebsite="0" showInStore="0">
                     <label>Select products types</label>
                     <validate>required-entry</validate>
                     <source_model>Onecode\ShopFlixConnector\Model\Config\SupportedProducts</source_model>
@@ -81,7 +81,7 @@
                         <field id="*/*/enable">1</field>
                     </depends>
                 </field>
-                <field id="time_modifier" translate="label,comment" type="select" sortOrder="401" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="time_modifier" translate="label,comment" type="select" sortOrder="401" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Time modifier</label>
                     <comment><![CDATA[This field is used to filter the orders we requested from the SHOPFLIX API]]></comment>
                     <validate>required-entry</validate>
@@ -90,7 +90,7 @@
                         <field id="*/*/enable">1</field>
                     </depends>
                 </field>
-                <field id="tracking_voucher_pdf_format" translate="label,comment" type="select" sortOrder="500" showInStore="0" showInWebsite="0" showInDefault="1">
+                <field id="tracking_voucher_pdf_format" translate="label,comment" type="select" sortOrder="500" showInStore="0" showInWebsite="1" showInDefault="1">
                     <label>Tracking Voucher Print Format</label>
                     <comment><![CDATA[This field is used to select the format which we want to print tracking voucher]]></comment>
                     <source_model>Onecode\ShopFlixConnector\Model\Config\TrackingVoucherFormat</source_model>
@@ -100,13 +100,13 @@
                     </depends>
                 </field>
             </group>
-            <group id="xml_setting" translate="label" type="text" sortOrder="110" showInStore="0" showInDefault="1">
+            <group id="xml_setting" translate="label" type="text" sortOrder="110" showInStore="0" showInDefault="1" showInWebsite="1">
                 <label>Xml Configs</label>
                 <depends>
                     <field id="*/settings/enable">1</field>
                 </depends>
                 <field id="enable" translate="label" type="select" sortOrder="90"
-                       showInStore="0" showInDefault="1" showInWebsite="0">
+                       showInStore="0" showInDefault="1" showInWebsite="1">
                     <label>Generate Xml</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>
@@ -156,7 +156,7 @@
                     </depends>
                 </field>
                 <field id="export_category_tree" translate="label" type="select" sortOrder="95"
-                       showInStore="0" showInDefault="1" showInWebsite="0">
+                       showInStore="0" showInDefault="1" showInWebsite="1">
                     <label>Export Category Tree</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
