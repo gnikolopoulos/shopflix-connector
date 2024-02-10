@@ -45,7 +45,16 @@
         <columnsControls name="columns_controls"/>
         <exportButton name="export_button"/>
         <filterSearch name="fulltext"/>
-        <filters name="listing_filters"/>
+        <filters name="listing_filters">
+            <filterSelect name="website_id" provider="${ $.parentName }">
+                <settings>
+                    <options class="Magento\Store\Ui\Component\Listing\Column\Store\Options"/>
+                    <caption translate="true">All Websites</caption>
+                    <label translate="true">Website</label>
+                    <dataScope>website_id</dataScope>
+                </settings>
+            </filterSelect>
+        </filters>
         <massaction name="listing_massaction" component="Onecode_ShopFlixConnector/js/grid/tree-massactions">
             <action name="shopflix_update_orders">
                 <settings>
