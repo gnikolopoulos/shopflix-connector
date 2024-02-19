@@ -17,7 +17,7 @@ class Website implements OptionSourceInterface
      * @param Magento\Store\Model\ResourceModel\Website\CollectionFactory $websiteCollectionFactory
      */
     public function __construct(
-        Magento\Store\Model\ResourceModel\Website\CollectionFactory $websiteCollectionFactory
+        \Magento\Store\Model\ResourceModel\Website\CollectionFactory $websiteCollectionFactory
     )
     {
         $this->websiteCollectionFactory = $websiteCollectionFactory;
@@ -31,7 +31,7 @@ class Website implements OptionSourceInterface
     public function toOptionArray()
     {
         $options = [];
-        foreach ($this->websiteCollectionFactory as $website) {
+        foreach ($this->websiteCollectionFactory->create() as $website) {
             $options[] = [
                 'label' => $website->getName(),
                 'value' => $website->getWebsiteId(),
