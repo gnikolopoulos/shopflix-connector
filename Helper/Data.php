@@ -12,6 +12,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Framework\Registry;
 
 /**
  * Class Data
@@ -25,17 +26,16 @@ class Data extends AbstractHelper implements ScopeInterface
      */
     const ENABLE_PATH = 'shopflix/settings/enable';
 
-
     /**
      * Api Url
      */
     const API_URL = 'shopflix/settings/api_url';
 
-
     /**
      * Username path
      */
     const USERNAME_PATH = 'shopflix/settings/username';
+
     /**
      * Api Key path
      */
@@ -48,10 +48,12 @@ class Data extends AbstractHelper implements ScopeInterface
     const SHOPFLIX_VOUCHER_PRINT_FORMAT = 'shopflix/settings/tracking_voucher_pdf_format';
 
     const INVOICE_ON_ACCEPTANCE = 'shopflix/settings/invoice';
+
     /**
      * Selected products types
      */
     const SELECTED_PRODUCTS_PATH = 'shopflix/settings/supported_products';
+
     /**
      * Generate products xml
      */
@@ -61,6 +63,7 @@ class Data extends AbstractHelper implements ScopeInterface
      * MPN Attribute Path
      */
     const MPN_ATTRIBUTE_PATH = 'shopflix/xml_setting/mpn';
+
     /**
      * EAN Attribute Path
      */
@@ -75,10 +78,12 @@ class Data extends AbstractHelper implements ScopeInterface
      * Description Attribute Path
      */
     const DESCRIPTION_ATTRIBUTE_PATH = 'shopflix/xml_setting/description';
+
     /**
      * Export Category Path
      */
     const EXPORT_CATEGORY_PATH = 'shopflix/xml_setting/export_category_tree';
+
     /**
      * Manufacturer Path
      */
@@ -94,18 +99,31 @@ class Data extends AbstractHelper implements ScopeInterface
      */
     const AUTO_ACCEPT_PATH = 'shopflix/settings/auto_accept';
 
+    /**
+     * @var Magento\Framework\Encryption\EncryptorInterface
+     */
     private $_encryptor;
+
+    /**
+     * @var Magento\Framework\Registry
+     */
+    protected $_registry;
 
     /**
      * Data constructor.
      * @param Context $context
      * @param EncryptorInterface $encryptor
+     * @param Registry $registry
      */
-    public function __construct(Context            $context,
-                                EncryptorInterface $encryptor)
+    public function __construct(
+        Context            $context,
+        EncryptorInterface $encryptor,
+        Registry           $registry
+    )
     {
         parent::__construct($context);
         $this->_encryptor = $encryptor;
+        $this->_registry = $registry;
     }
 
     /**
@@ -114,9 +132,7 @@ class Data extends AbstractHelper implements ScopeInterface
      */
     public function getSelectedProductsTypes(): array
     {
-        return
-            explode(",", $this->getConfig(self::SELECTED_PRODUCTS_PATH));
-
+        return explode(",", $this->getConfig(self::SELECTED_PRODUCTS_PATH));
     }
 
     /**
@@ -129,7 +145,8 @@ class Data extends AbstractHelper implements ScopeInterface
     {
         return $this->scopeConfig->getValue(
             $config,
-            self::SCOPE_STORE
+            self::SCOPE_WEBSITE,
+            $this->_registry->registry('shopflix_website_id')
         );
     }
 
@@ -160,9 +177,7 @@ class Data extends AbstractHelper implements ScopeInterface
      */
     public function getUsername(): ?string
     {
-        return
-            $this->getConfig(self::USERNAME_PATH);
-
+        return $this->getConfig(self::USERNAME_PATH);
     }
 
     /**
@@ -171,16 +186,13 @@ class Data extends AbstractHelper implements ScopeInterface
      */
     public function getApikey(): string
     {
-        return
-            (string)$this->_encryptor->decrypt($this->getConfig(self::API_KEY_PATH));
-
+        return (string)$this->_encryptor->decrypt($this->getConfig(self::API_KEY_PATH));
     }
 
     public function getApiUrl(): string
     {
         return $this->getConfig(self::API_URL);
     }
-
 
     public function getMpnAttribute(): string
     {
@@ -218,12 +230,10 @@ class Data extends AbstractHelper implements ScopeInterface
         return $this->getConfig(self::WEIGHT_PATH);
     }
 
-
     public function toOrder(): string
     {
         return $this->getConfig(self::CONVERT_SHOPFLIX_ORDER_TO_MAGENTO);
     }
-
 
     public function autoAccept(): bool
     {
@@ -234,7 +244,6 @@ class Data extends AbstractHelper implements ScopeInterface
     {
         return $this->getConfig(self::SHOPFLIX_TIME_MODIFIER);
     }
-
 
     public function getVoucherPrintFormat(): ?string
     {

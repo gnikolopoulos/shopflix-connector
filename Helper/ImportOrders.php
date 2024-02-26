@@ -12,6 +12,7 @@ namespace Onecode\ShopFlixConnector\Helper;
 use Exception;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Registry;
 use Onecode\ShopFlixConnector\Api\Data\OrderInterface;
 use Onecode\ShopFlixConnector\Api\ManagementInterface;
 use Onecode\ShopFlixConnector\Api\OrderRepositoryInterface;
@@ -36,6 +37,7 @@ class ImportOrders
     private $_itemFactory;
     private $_addressFactory;
     private $_orderManagement;
+    private $_registry;
 
 
     /**
@@ -47,6 +49,7 @@ class ImportOrders
      * @param ItemFactory $itemFactory
      * @param AddressFactory $addressFactory
      * @param ManagementInterface $orderManagement
+     * @param Registry $registry
      */
     public function __construct(
         Data                     $data,
@@ -56,7 +59,8 @@ class ImportOrders
         ProductRepository        $productRepository,
         ItemFactory              $itemFactory,
         AddressFactory           $addressFactory,
-        ManagementInterface      $orderManagement
+        ManagementInterface      $orderManagement,
+        Registry                 $registry
     )
     {
         $this->_helper = $data;
@@ -67,6 +71,7 @@ class ImportOrders
         $this->_addressFactory = $addressFactory;
         $this->_logger = $logger;
         $this->_orderManagement = $orderManagement;
+        $this->_registry = $registry;
     }
 
 
@@ -85,6 +90,9 @@ class ImportOrders
             $this->_helper->getApiUrl(),
             $this->_helper->getTimeModifier()
         );
+
+        $this->_logger->info('username for website: '.$this->_registry->registry('shopflix_website_id'));
+        $this->_logger->info($this->_helper->getUsername());
 
         $newOrders = $this->_connector->getNewOrders();
         foreach ($newOrders as $order) {
