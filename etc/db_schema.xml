@@ -55,6 +55,8 @@
     <table name="onecode_shopflix_order_grid" resource="default" engine="innodb" comment="SHOPFLIX Flat Order Grid">
         <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="false"
                 comment="Entity ID"/>
+        <column xsi:type="int" name="website_id" unsigned="true" nullable="false" identity="false"
+                comment="Magento Website ID"/>
         <column xsi:type="varchar" name="status" nullable="true" length="32" comment="Status"/>
         <column xsi:type="decimal" name="total_paid" scale="4" precision="20" unsigned="false" nullable="true"
                 comment="Total Paid"/>
