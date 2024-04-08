@@ -135,6 +135,10 @@ class ImportOrders
         $price = 0;
 
         foreach ($data['items'] as $item) {
+            if (is_null($item['sku'])) {
+                continue;
+            }
+
             try {
                 $product = $this->_productRepository->get($item['sku']);
                 $item['name'] = $product->getName();

@@ -41,16 +41,19 @@ class Save extends Order implements HttpPostActionInterface
             $this->_request->getParam('reject')['comment_text'] : $this->_request->getParam('reject')['reason'];
 
         if ($order) {
+            $this->_coreRegistry->register('shopflix_website_id', $order->getWebsiteId());
+
             try {
                 $this->orderManagement->reject($order->getEntityId(), $rejectReason);
                 $this->messageManager->addSuccessMessage(__('You rejected the order.'));
             } catch (LocalizedException $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
             } catch (Exception $e) {
-
                 $this->messageManager->addErrorMessage(__('You have not accepted the item.'));
                 $this->logger->critical($e);
             }
+
+            $this->_coreRegistry->unregister('shopflix_website_id');
             return $resultRedirect->setPath('shopflix/order/view', ['order_id' => $order->getId()]);
         }
         return $resultRedirect->setPath('shopflix/*/');

@@ -10,12 +10,10 @@ namespace Onecode\ShopFlixConnector\Controller\Adminhtml\Order;
 
 use Exception;
 use Magento\Framework\App\Action\HttpGetActionInterface;
-use Magento\Framework\Registry;
 use Magento\Store\Model\ResourceModel\Website\CollectionFactory as WebsiteCollectionFactory;
 use Onecode\ShopFlixConnector\Controller\Adminhtml\Order;
 use Onecode\ShopFlixConnector\Helper\ExportOrders;
 use Onecode\ShopFlixConnector\Helper\ImportOrders;
-
 
 class Sync extends Order implements HttpGetActionInterface
 {
@@ -27,22 +25,14 @@ class Sync extends Order implements HttpGetActionInterface
     protected $_websiteCollectionFactory;
 
     /**
-     * @var Magento\Framework\Registry
-     */
-    protected $_registry;
-
-    /**
      * Class constructor.
      * @param Magento\Store\Model\ResourceModel\Website\CollectionFactory $websiteCollectionFactory
-     * @param Magento\Framework\Registry $registry
      */
     public function __construct(
-        WebsiteCollectionFactory $websiteCollectionFactory,
-        Registry $registry
+        WebsiteCollectionFactory $websiteCollectionFactory
     )
     {
         $this->_websiteCollectionFactory = $websiteCollectionFactory;
-        $this->_registry = $registry;
     }
 
     public function execute()
@@ -50,7 +40,7 @@ class Sync extends Order implements HttpGetActionInterface
         $resultRedirect = $this->resultRedirectFactory->create();
 
         foreach ($this->_websiteCollectionFactory->create() as $website) {
-            $this->_registry->register('shopflix_website_id', $website->getWebsiteId());
+            $this->_coreRegistry->register('shopflix_website_id', $website->getWebsiteId());
 
             try {
                 $syncOrdersFromShopFlix = $this->_objectManager->create(ImportOrders::class);
@@ -64,7 +54,7 @@ class Sync extends Order implements HttpGetActionInterface
             }
         }
 
-        $this->_registry->unregister('shopflix_website_id');
+        $this->_coreRegistry->unregister('shopflix_website_id');
         return $resultRedirect->setPath('shopflix/*/');
     }
 }

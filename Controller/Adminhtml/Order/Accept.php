@@ -39,6 +39,7 @@ class Accept extends Order implements HttpPostActionInterface
         }
         $order = $this->_initOrder();
         if ($order) {
+            $this->_coreRegistry->register('shopflix_website_id', $order->getWebsiteId());
             try {
                 $this->orderManagement->accept($order->getEntityId() , true);
                 $this->messageManager->addSuccessMessage(__('You accepted the order.'));
@@ -51,6 +52,8 @@ class Accept extends Order implements HttpPostActionInterface
                 $this->messageManager->addErrorMessage(__('You have not accepted the item.'));
                 $this->logger->critical($e);
             }
+
+            $this->_coreRegistry->unregister('shopflix_website_id');
             return $resultRedirect->setPath('shopflix/order/view', ['order_id' => $order->getId()]);
         }
         return $resultRedirect->setPath('shopflix/*/');
