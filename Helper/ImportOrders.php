@@ -91,9 +91,6 @@ class ImportOrders
             $this->_helper->getTimeModifier()
         );
 
-        $this->_logger->info('username for website: '.$this->_registry->registry('shopflix_website_id'));
-        $this->_logger->info($this->_helper->getUsername());
-
         $newOrders = $this->_connector->getNewOrders();
         foreach ($newOrders as $order) {
             $this->processNewOrder($order);
@@ -135,10 +132,6 @@ class ImportOrders
         $price = 0;
 
         foreach ($data['items'] as $item) {
-            if (is_null($item['sku'])) {
-                continue;
-            }
-
             try {
                 $product = $this->_productRepository->get($item['sku']);
                 $item['name'] = $product->getName();

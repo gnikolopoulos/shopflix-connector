@@ -250,6 +250,10 @@ class Connector
 
 
             foreach ($responseObject['products'] as $product) {
+                if (is_null($product['product_code'])) {
+                    continue;
+                }
+
                 $data["items"][] = [
                     ItemInterface::SKU => $product['product_code'],
                     ItemInterface::PRICE => $product['price'],
@@ -425,7 +429,6 @@ class Connector
         if ($response->getStatusCode() >= 400 && $response->getStatusCode() <= 500) {
             throw new Exception($response->getBody()->getContents());
         }
-
 
         try {
             json_decode($response->getBody()->getContents());

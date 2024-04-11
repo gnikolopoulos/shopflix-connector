@@ -128,7 +128,6 @@ abstract class PrintAction extends Action
 
                         if ($shipment->getShipmentStatus() == 1) {
                             $connector->forShipment($shipment->getIncrementId());
-
                         }
                         $shipment->setShipmentStatus(2)
                             ->setIsPrinted(true);
